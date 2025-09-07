@@ -8,7 +8,6 @@ A **FastAPI-based system** that integrates a secure **login application** with a
 
 ## 🏗️ System Architecture
 
-
 ┌─────────────────────┐    HTTP Request    ┌──────────────────────┐
 │   Login Application │ ─────────────────► │ Document Processing  │
 │   (Port 8000)       │                    │ Server (Port 8080)   │
@@ -17,6 +16,7 @@ A **FastAPI-based system** that integrates a secure **login application** with a
 │   - File Upload     │                    │   - Image Processing │
 │   - Dashboard       │                    │   - Text Extraction  │
 └─────────────────────┘                    └──────────────────────┘
+
 
 ## 🔑 Login Application (Port 8000)
 User registration & authentication
