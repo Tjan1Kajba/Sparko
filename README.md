@@ -1,10 +1,13 @@
-🚀 Šparko Receipt Processing System
-https://i.ytimg.com/vi/trH_vHMMgvo/maxresdefault.jpg
+# 🚀 Šparko Receipt Processing System
 
-A FastAPI-based system that integrates a secure login application with a document processing server using the Donut model for intelligent image-to-text extraction.
+[![YouTube Video](https://i.ytimg.com/vi/trH_vHMMgvo/maxresdefault.jpg)](https://www.youtube.com/embed/trH_vHMMgvo?si=PV53zFyxGKhIqZkD)
 
-🏗️ System Architecture
-text
+A **FastAPI-based system** that integrates a secure **login application** with a **document processing server** using the **Donut model** for intelligent image-to-text extraction.  
+
+---
+
+## 🏗️ System Architecture
+
 ┌─────────────────────┐    HTTP Request    ┌──────────────────────┐
 │   Login Application │ ─────────────────► │ Document Processing  │
 │   (Port 8000)       │                    │ Server (Port 8080)   │
@@ -13,8 +16,9 @@ text
 │   - File Upload     │                    │   - Image Processing │
 │   - Dashboard       │                    │   - Text Extraction  │
 └─────────────────────┘                    └──────────────────────┘
-✨ Key Features
-🔑 Login Application (Port 8000)
+
+
+## 🔑 Login Application (Port 8000)
 User registration & authentication
 
 Session management with timeout
@@ -25,7 +29,7 @@ Drag & drop file upload
 
 Real-time results dashboard
 
-📄 Document Processing Server (Port 8080)
+## 📄 Document Processing Server (Port 8080)
 Donut model for text extraction
 
 REST API endpoints
@@ -36,65 +40,79 @@ Batch processing support
 
 Health monitoring
 
-🔐 Security Guide
+## 🔐 Security Guide
 The app uses a secure SECRET_KEY (from .env or environment variables). If none is set, one is generated automatically.
 
 Setup Environment Variables
 bash
+Copy code
 # Generate a strong secret key
 python -c "import secrets; print(secrets.token_urlsafe(32))"
 Copy .env.example → .env
 
 Replace your-secret-key-here with the generated key
 
-⚡ Production Tips:
+## ⚡ Production Tips:
+
 Never commit .env files
 
 Use platform-specific environment variable settings
 
 Enable HTTPS & rate limiting
 
-⚡ Quick Start
-📋 Prerequisites
+## ⚡ Quick Start
+## 📋 Prerequisites
 Python 3.8+
 
 MongoDB (local or Atlas)
 
 CUDA-capable GPU (optional)
 
-▶️ Option 1: Automated Startup (Recommended)
+## ▶️ Option 1: Automated Startup (Recommended)
 bash
+Copy code
 python start_complete_system.py
-▶️ Option 2: Manual Startup
+## ▶️ Option 2: Manual Startup
 Start Document Processing Server:
 
 bash
+Copy code
 cd Server
 pip install -r requirements.txt
 python -m uvicorn app:app --host 0.0.0.0 --port 8080 --reload
 Start Login Application:
 
 bash
+Copy code
 cd Project_Login
 pip install -r requirements.txt
 python -m uvicorn main:app --host 0.0.0.0 --port 8000 --reload
-📡 API Endpoints
-🔑 Login Application (Port 8000)
-Method	Endpoint	Description
-GET	/	Home
-GET	/register	Registration form
-POST	/register	Create new user
-GET	/login	Login form
-POST	/login	Authenticate user
-GET	/dashboard	Dashboard (auth required)
-POST	/dashboard	Upload & process doc
-GET	/logout	Logout
-📄 Document Processing Server (Port 8080)
-Method	Endpoint	Description
-POST	/process-document	Process single doc
-GET	/docs	Swagger UI
-📂 File Structure
+## 📡 API Endpoints
+## 🔑 Login Application (Port 8000)
+GET / → Home
+
+GET /register → Registration form
+
+POST /register → Create new user
+
+GET /login → Login form
+
+POST /login → Authenticate user
+
+GET /dashboard → Dashboard (auth required)
+
+POST /dashboard → Upload & process doc
+
+GET /logout → Logout
+
+## 📄 Document Processing Server (Port 8080)
+POST /process-document → Process single doc
+
+GET /docs → Swagger UI
+
+## 📂 File Structure
 text
+Copy code
 Project_Login/
 ├── main.py                     # FastAPI login app
 ├── requirements.txt            # Dependencies
@@ -102,11 +120,11 @@ Project_Login/
 ├── start_system.ps1            # PowerShell script
 ├── test_integration.py         # Integration tests
 ├── static/                     # CSS, images
-└── templates/                  # HTML templates
-    ├── dashboard.html
-    ├── login.html
-    ├── register.html
-    └── ...
+├── templates/                  # HTML templates
+│   ├── dashboard.html
+│   ├── login.html
+│   ├── register.html
+│   └── ...
 
 Server/
 ├── app.py                      # FastAPI server
@@ -114,7 +132,7 @@ Server/
 ├── requirements.txt            # Dependencies
 ├── start_server.py             # Startup script
 └── model_cache/                # Cached model files
-🔄 Integration Flow
+## 🔄 Integration Flow
 User uploads image via dashboard
 
 Login app forwards file → processing server
@@ -125,9 +143,9 @@ Server responds with results
 
 Login app displays output
 
-⚙️ Performance Optimization
+## ⚙️ Performance Optimization
 GPU: Install CUDA, adjust batch sizes
 
 CPU: Optimize thread usage, scale with workers
 
-Note: Visit http://localhost:8000 after starting both services to access the application.
+
