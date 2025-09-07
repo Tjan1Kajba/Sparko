@@ -8,14 +8,8 @@ A **FastAPI-based system** that integrates a secure **login application** with a
 
 ## 🏗️ System Architecture
 
-┌─────────────────────┐    HTTP Request    ┌──────────────────────┐
-│   Login Application │ ─────────────────► │ Document Processing  │
-│   (Port 8000)       │                    │ Server (Port 8080)   │
-│                     │ ◄───────────────── │                      │
-│   - User Auth       │    JSON Response   │   - Donut Model      │
-│   - File Upload     │                    │   - Image Processing │
-│   - Dashboard       │                    │   - Text Extraction  │
-└─────────────────────┘                    └──────────────────────┘
+<img width="519" height="177" alt="image" src="https://github.com/user-attachments/assets/8caabe41-58a9-4c91-8dfb-2acb29718a6d" />
+
 
 
 ## 🔑 Login Application (Port 8000)
