@@ -1,0 +1,13 @@
+# Core ML dependencies
+torch
+transformers
+pillow
+
+# FastAPI and server dependencies
+fastapi
+uvicorn[standard]
+python-multipart
+
+# Additional utilities
+python-dotenv
+aiofiles

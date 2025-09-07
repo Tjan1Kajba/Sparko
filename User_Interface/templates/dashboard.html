@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dashboard - Document Processing</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/static/css/style.css" />
+    <link rel="stylesheet" href="/static/css/dashboard.css" />
+    <link rel="stylesheet" href="/static/css/receipt_modal.css" />
+    <link rel="icon" type="image/png" href="/static/images/sparko_logo_3.png" />
+  </head>
+  <body class="min-vh-100 d-flex flex-column bg-black body-style">
+    <div class="animated-bg position-fixed top-0 start-0 w-100 h-100">
+      <div class="gradient"></div>
+      <div class="blob blob1"></div>
+      <div class="blob blob2"></div>
+      <div class="blob blob3"></div>
+      <div class="blob blob4"></div>
+      <div class="grid"></div>
+    </div>
+
+    <main
+      class="container-fluid dashboard-container py-5 position-relative flex-grow-1"
+    >
+      <div class="row justify-content-center min-vh-100 align-items-start py-3">
+        <div
+          class="col-12 main-container"
+          style="margin-top: -35px; padding: 0px"
+        >
+          {% include 'navbar.html' %}
+          <div class="container-scanner">
+            <div class="row gy-4 gy-md-0 align-items-start row-padding">
+              <div class="col-md-6">
+                <div class="math-bracket">
+                  <div class="math-under-bracket math-under-bracket-style">
+                    <h2 class="upload-heading">Upload image</h2>
+
+                    <form
+                      id="uploadForm"
+                      action="/dashboard"
+                      method="post"
+                      enctype="multipart/form-data"
+                    >
+                      <div class="mb-3">
+                        <div class="drop-zone" id="dropZone">
+                          <div class="file-icon" id="fileIcon">📄</div>
+                          <div class="drop-text" id="dropText">
+                            <strong>Drag and drop your document here</strong
+                            ><br />
+                            or click to select a file
+                          </div>
+                          <div
+                            class="image-preview image-preview-hidden"
+                            id="imagePreview"
+                          >
+                            <img
+                              id="previewImg"
+                              src=""
+                              alt="Preview"
+                              class="preview-image"
+                            />
+                            <div class="overlay-text overlay-text-style">
+                              <strong>Click or drag to change image</strong>
+                            </div>
+                            <button
+                              type="button"
+                              class="btn btn-sm btn-outline-danger clear-btn clear-btn-style"
+                              onclick="resetDropZone()"
+                            >
+                              ✕
+                            </button>
+                          </div>
+                          <input
+                            class="form-control d-none"
+                            type="file"
+                            id="document"
+                            name="file"
+                            accept="image/*"
+                            required
+                          />
+                        </div>
+                      </div>
+                      <div class="d-grid">
+                        <button
+                          type="submit"
+                          class="btn btn-warning w-100 fw-bold modern-process-btn"
+                        >
+                          <span>🚀 Process Document</span>
+                        </button>
+                      </div>
+                    </form>
+
+                    {% if result and result.success %}
+                    <div
+                      id="processedFileInfo"
+                      class="mt-4 p-3 processed-file-info"
+                    >
+                      <div class="d-flex align-items-center text-white">
+                        <span class="processed-file-icon">📁</span>
+                        <div class="text-align-left">
+                          <small class="processed-file-label"
+                            >PROCESSED FILE</small
+                          >
+                          <div class="processed-file-name">{{ filename }}</div>
+                        </div>
+                      </div>
+                    </div>
+                    {% endif %}
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div>
+                  <div class="container-result">
+                    {% if not result %}
+                    <h2 class="processing-results-heading">
+                      Processing Results
+                    </h2>
+                    {% endif %} {% if result %} {% if result.success %}
+                    <div
+                      class="alert alert-success success-alert"
+                      style="padding-top: 50px; border-radius: 18px"
+                    >
+                      <div class="success-bg-overlay"></div>
+
+                      <div class="position-relative">
+                        <div class="text-center mb-4">
+                          <div
+                            class="d-flex flex-column flex-sm-row align-items-center justify-content-center mb-3"
+                          >
+                            <div class="success-icon-container mb-2 mb-sm-0">
+                              <span class="success-icon">✔️</span>
+                            </div>
+                            <div class="text-center text-sm-start">
+                              <h3 class="success-title">
+                                Processing Complete!
+                              </h3>
+                              <div class="success-subtitle">
+                                Document successfully processed
+                              </div>
+                            </div>
+                          </div>
+
+                          {% if result.processing_time_seconds %}
+                          <div class="processing-time-badge">
+                            <div class="processing-time-icon">
+                              <span>⏳</span>
+                            </div>
+                            <span class="processing-time-text">
+                              {{ result.processing_time_seconds }}s
+                            </span>
+                          </div>
+                          {% endif %}
+                        </div>
+                      </div>
+
+                      <div class="receipt-form-container">
+                        <form id="receiptEditForm">
+                          <input
+                            type="hidden"
+                            id="receipt_image_id"
+                            value="{% if image_id %}{{ image_id }}{% endif %}"
+                          />
+
+                          <div class="mb-3">
+                            <h6 class="form-section-title">🏪 Store Info</h6>
+                            <div class="row g-2">
+                              <div class="col-md-6">
+                                <label class="form-label-white"
+                                  >Store Name:</label
+                                >
+                                <input
+                                  type="text"
+                                  class="form-control form-control-sm form-input-standard"
+                                  id="store_name"
+                                  placeholder="Store Name"
+                                />
+                              </div>
+                              <div class="col-md-6">
+                                <label class="form-label-white">Phone:</label>
+                                <input
+                                  type="text"
+                                  class="form-control form-control-sm form-input-standard"
+                                  id="phone"
+                                  placeholder="Phone Number"
+                                />
+                              </div>
+                              <div class="col-12">
+                                <label class="form-label-white">Address:</label>
+                                <input
+                                  type="text"
+                                  class="form-control form-control-sm form-input-standard"
+                                  id="store_addr"
+                                  placeholder="Store Address"
+                                />
+                              </div>
+                            </div>
+                          </div>
+
+                          <div class="mb-3">
+                            <h6 class="form-section-title">📅 Transaction</h6>
+                            <div class="row g-2">
+                              <div class="col-md-6">
+                                <label class="form-label-white">Date:</label>
+                                <input
+                                  type="text"
+                                  class="form-control form-control-sm form-input-standard"
+                                  id="date"
+                                  placeholder="DD/MM/YYYY"
+                                />
+                              </div>
+                              <div class="col-md-6">
+                                <label class="form-label-white">Time:</label>
+                                <input
+                                  type="text"
+                                  class="form-control form-control-sm form-input-standard"
+                                  id="time"
+                                  placeholder="HH:MM:SS"
+                                />
+                              </div>
+                            </div>
+                          </div>
+
+                          <div class="mb-3">
+                            <h6 class="form-section-title">🛒 Items</h6>
+                            <div id="itemsList"></div>
+                            <button
+                              type="button"
+                              class="btn btn-outline-warning btn-sm mt-2 add-item-button enhanced-add-item-btn"
+                              onclick="addNewItem()"
+                            >
+                              🛍️ Add Item
+                            </button>
+                          </div>
+
+                          <div class="mb-3">
+                            <h6 class="form-section-title">💰 Totals</h6>
+                            <div class="row g-2">
+                              <div class="col-md-4">
+                                <label class="form-label-white"
+                                  >Subtotal:</label
+                                >
+                                <input
+                                  type="text"
+                                  class="form-control form-control-sm form-input-standard"
+                                  id="subtotal"
+                                  placeholder="0.00"
+                                />
+                              </div>
+                              <div class="col-md-4">
+                                <label class="form-label-white">Tax:</label>
+                                <input
+                                  type="text"
+                                  class="form-control form-control-sm form-input-standard"
+                                  id="tax"
+                                  placeholder="0.00"
+                                />
+                              </div>
+                              <div class="col-md-4">
+                                <label class="form-label-white">Service:</label>
+                                <input
+                                  type="text"
+                                  class="form-control form-control-sm form-input-standard"
+                                  id="svc"
+                                  placeholder="0.00"
+                                />
+                              </div>
+                              <div class="col-md-4">
+                                <label class="form-label-white">Tips:</label>
+                                <input
+                                  type="text"
+                                  class="form-control form-control-sm form-input-standard"
+                                  id="tips"
+                                  placeholder="0.00"
+                                />
+                              </div>
+                              <div class="col-md-4">
+                                <label class="form-label-white"
+                                  >Discount:</label
+                                >
+                                <input
+                                  type="text"
+                                  class="form-control form-control-sm form-input-standard"
+                                  id="discount"
+                                  placeholder="0.00"
+                                />
+                              </div>
+                              <div class="col-md-4">
+                                <label class="form-label-white-bold"
+                                  >Total:</label
+                                >
+                                <input
+                                  type="text"
+                                  class="form-control form-control-sm form-input-total"
+                                  id="total"
+                                  placeholder="0.00"
+                                />
+                              </div>
+                            </div>
+                          </div>
+
+                          <div class="d-flex gap-2 mt-3 flex-wrap">
+                            <button
+                              type="button"
+                              class="btn btn-warning action-button-save enhanced-save-btn"
+                              onclick="saveReceiptData()"
+                            >
+                              💾 Save
+                            </button>
+                            <button
+                              type="button"
+                              class="btn btn-outline-light action-button-export enhanced-export-btn"
+                              onclick="exportToXML()"
+                            >
+                              📄 Export
+                            </button>
+                            <button
+                              type="button"
+                              class="btn btn-outline-info action-button-reset enhanced-reset-btn"
+                              onclick="resetForm()"
+                            >
+                              🔄 Reset
+                            </button>
+                          </div>
+                        </form>
+                      </div>
+
+                      <div class="mt-3">
+                        <button
+                          class="btn btn-link text-white p-0 raw-text-toggle enhanced-raw-text-toggle"
+                          type="button"
+                          data-bs-toggle="collapse"
+                          data-bs-target="#rawTextCollapse"
+                        >
+                          📋 View Raw Extracted Text
+                        </button>
+                        <div class="collapse" id="rawTextCollapse">
+                          <div class="raw-text-container">
+                            {{ result.extracted_text }}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    {% else %}
+                    <div class="alert alert-danger error-alert">
+                      <h5>❌ Processing Failed</h5>
+                      <p><strong>Error:</strong> {{ result.error }}</p>
+                    </div>
+                    {% endif %} {% else %}
+                    <div class="default-results">
+                      <div class="default-results-icon">📋</div>
+                      <p>Upload an image to see the processing results here.</p>
+                    </div>
+                    {% endif %}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+    {% include 'footer.html' %}
+
+    <div
+      class="modal fade"
+      id="imageModal"
+      tabindex="-1"
+      aria-labelledby="imageModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-xl modal-dialog-centered">
+        <div
+          class="modal-content"
+          style="background: rgba(0, 0, 0, 0.9); border: none"
+        >
+          <div class="modal-header border-0">
+            <h5 class="modal-title text-white" id="imageModalLabel">
+              📷 Receipt Image
+            </h5>
+            <button
+              type="button"
+              class="btn-close btn-close-white"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body text-center p-0">
+            <img
+              id="modalImage"
+              src=""
+              alt="Receipt Image"
+              class="img-fluid"
+              style="max-height: 80vh; width: auto"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/static/js/dashboard-main.js"></script>
+    <script src="/static/js/file-upload.js"></script>
+    <script src="/static/js/image-preview.js"></script>
+    <script src="/static/js/text-parsing.js"></script>
+    <script src="/static/js/data-processing.js"></script>
+
+    <script src="/static/js/item-management.js"></script>
+    <script src="/static/js/data-export.js"></script>
+  </body>
+</html>

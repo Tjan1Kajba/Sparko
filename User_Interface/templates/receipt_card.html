@@ -1,0 +1,170 @@
+<div
+  class="receipt-card h-100 p-0 overflow-hidden position-relative"
+  data-receipt-id="{{ receipt['_id']|e }}"
+  onclick="openReceiptModal(this.dataset.receiptId)"
+>
+  <div class="accent-bar"></div>
+
+  <div class="p-4">
+    <div class="receipt-header mb-4">
+      <div class="d-flex justify-content-between align-items-start mb-3">
+        <div class="flex-grow-1">
+          <div class="d-flex align-items-center mb-2">
+            <div class="store-icon me-3">
+              <img
+                class="store-logo"
+                data-store-name="{% if receipt['store_name'] %}{{ receipt['store_name'] }}{% else %}store{% endif %}"
+                onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
+              />
+              <span style="font-size: 20px; display: none">🏪</span>
+            </div>
+            <div style="text-align: left">
+              <h5
+                class="text-white mb-1 fw-bold store-name"
+                title="{% if receipt['store_name'] %}{{ receipt['store_name'] }}{% else %}Unknown Store{% endif %}"
+              >
+                {% if receipt['store_name'] %}{{ receipt['store_name'] }}{% else
+                %}Unknown Store{% endif %}
+              </h5>
+              <small class="text-light receipt-date">
+                {% if receipt['created_at_formatted'] %}{{
+                receipt['created_at_formatted'] }}{% endif %}
+              </small>
+            </div>
+          </div>
+        </div>
+        <div class="text-end">
+          <div class="total-badge">
+            <span class="text-white fw-bold total-amount">
+              {% if receipt['total'] %} {% set total_value =
+              receipt['total']|string %} {% set currency_symbol =
+              receipt['currency'] or '€' %} {% if total_value.startswith('$') or
+              total_value.startswith('€') or total_value.startswith('£') or
+              total_value.startswith('¥') %} {{ total_value[1:] }}{{
+              total_value[0] }} {% else %} {{ total_value }}{{ currency_symbol
+              }} {% endif %} {% else %} 0.00{{ receipt['currency'] or '€' }} {%
+              endif %}
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="receipt-details">
+      <div class="row g-2 mb-4">
+        <div class="col-12">
+          <div class="detail-section p-3">
+            <div class="d-flex align-items-center mb-3">
+              <div class="icon-wrapper me-2">
+                <span>📅</span>
+              </div>
+              <h6 class="text-warning mb-0 fw-semibold section-heading">
+                Transaction Details
+              </h6>
+            </div>
+            <div class="row g-2">
+              <div class="col-6">
+                <div class="info-item">
+                  <small class="text-light d-block info-item-label">Date</small>
+                  <span class="text-white info-item-value">
+                    {% if receipt['date'] %}{{ receipt['date'] }}{% else %}N/A{%
+                    endif %}
+                  </span>
+                </div>
+              </div>
+              <div class="col-6">
+                <div class="info-item">
+                  <small class="text-light d-block info-item-label">Time</small>
+                  <span class="text-white info-item-value">
+                    {% if receipt['time'] %}{{ receipt['time'] }}{% else %}N/A{%
+                    endif %}
+                  </span>
+                </div>
+              </div>
+            </div>
+            <div class="row g-2 mt-2">
+              <div class="col-12">
+                <div class="info-item">
+                  <small class="text-light d-block info-item-label"
+                    >Address</small
+                  >
+                  <span class="text-white info-item-address">
+                    {% if receipt['store_addr'] %}{{ receipt['store_addr'] }}{%
+                    else %}N/A{% endif %}
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {% if receipt['items'] and receipt['items']|length > 0 %} {% set
+      most_expensive_item =
+      receipt['items']|selectattr('value')|max(attribute='value') if
+      receipt['items']|selectattr('value')|list else receipt['items'][0] %}
+      <div class="detail-section mb-4 p-3">
+        <div class="d-flex align-items-center mb-3">
+          <div class="icon-wrapper me-2">
+            <span>🏆</span>
+          </div>
+          <h6 class="text-warning mb-0 fw-semibold section-heading">
+            Top Item ({{ receipt['items']|length }} total)
+          </h6>
+        </div>
+        <div
+          class="item-row d-flex justify-content-between align-items-center py-2 px-2"
+        >
+          <div class="item-info flex-grow-1" style="text-align: left">
+            <div class="text-white d-block item-name">
+              {% if most_expensive_item['name'] %}{{ most_expensive_item['name']
+              }}{% else %}Unnamed Item{% endif %}
+            </div>
+            {% if most_expensive_item['quantity'] %}
+            <div class="quantity-badge">
+              <span>📦</span>
+              <small class="text-light quantity-text"
+                >Qty: {{ most_expensive_item['quantity'] }}</small
+              >
+            </div>
+            {% endif %}
+          </div>
+          <div>
+            <div class="item-value-container">
+              <span class="item-value">
+                {% if most_expensive_item['value'] %} {% set item_value =
+                most_expensive_item['value']|string %} {% set currency_symbol =
+                receipt['currency'] or '€' %} {% if item_value.startswith('$')
+                or item_value.startswith('€') or item_value.startswith('£') or
+                item_value.startswith('¥') %} {{ item_value[1:] }}{{
+                item_value[0] }} {% else %} {{ item_value }}{{ currency_symbol
+                }} {% endif %} {% else %} 0.00{{ receipt['currency'] or '€' }}
+                {% endif %}
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+      {% endif %}
+    </div>
+
+    <div class="receipt-actions mt-auto pt-3">
+      <div class="d-flex gap-2">
+        <button
+          class="btn flex-fill py-2 fw-semibold export-btn"
+          data-receipt-id="{{ receipt['_id']|e }}"
+          onclick="event.stopPropagation(); exportReceiptToXML(this.dataset.receiptId)"
+        >
+          📄 Export
+        </button>
+        <button
+          class="btn flex-fill py-2 fw-semibold delete-btn"
+          data-receipt-id="{{ receipt['_id']|e }}"
+          onclick="event.stopPropagation(); deleteReceipt(this.dataset.receiptId)"
+        >
+          🗑️ Delete
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

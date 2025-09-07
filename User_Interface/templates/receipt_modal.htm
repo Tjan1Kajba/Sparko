@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <link
+      href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <div
+      class="modal fade receipt-modal"
+      id="receiptModal"
+      tabindex="-1"
+      aria-labelledby="receiptModalLabel"
+      aria-hidden="true"
+    >
+      <div
+        class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable"
+      >
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="receiptModalLabel">
+              📄 Receipt Details
+            </h5>
+            <button
+              type="button"
+              class="btn-close btn-close-white"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <div id="modalContent">
+              <div class="loading-container">
+                <div class="spinner-border text-warning" role="status">
+                  <span class="visually-hidden">Loading...</span>
+                </div>
+                <p class="loading-text">Loading receipt details...</p>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-info" id="modalEditBtn">
+              <span class="material-icons me-2">edit</span>Edit
+            </button>
+            <button
+              type="button"
+              class="btn btn-success d-none"
+              id="modalSaveBtn"
+              style="padding: 0.6rem 1.5rem !important"
+            >
+              <span class="material-icons me-2">save</span>Save Changes
+            </button>
+            <button
+              type="button"
+              class="btn btn-danger d-none"
+              id="modalCancelBtn"
+            >
+              <span class="material-icons me-2">close</span>Cancel
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script src="/static/js/receipt_modal.js"></script>
+  </body>
+</html>

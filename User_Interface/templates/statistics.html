@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dashboard - Document Processing</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/static/css/style.css" />
+    <link rel="stylesheet" href="/static/css/statistics.css" />
+    <link rel="icon" type="image/png" href="/static/images/sparko_logo_3.png" />
+  </head>
+  <body class="min-vh-100 d-flex flex-column bg-black body-style">
+    <div class="animated-bg position-fixed top-0 start-0 w-100 h-100">
+      <div class="gradient"></div>
+      <div class="blob blob1"></div>
+      <div class="blob blob2"></div>
+      <div class="blob blob3"></div>
+      <div class="blob blob4"></div>
+      <div class="grid"></div>
+    </div>
+
+    <main
+      class="container-fluid dashboard-container py-5 position-relative flex-grow-1"
+    >
+      <div class="row justify-content-center min-vh-100 align-items-start py-3">
+        <div
+          class="col-12 main-container"
+          style="margin-top: -35px; padding: 0px"
+        >
+          {% include 'navbar.html' %}
+          <div class="container-scanner">
+            <div class="row gy-4 gy-md-0 align-items-start row-padding">
+              <div class="col-md-6 mb-4">
+                <div class="container-result">
+                  <h2 class="processing-results-heading">
+                    Top 10 Stores by Total Spent
+                  </h2>
+                  <canvas id="topStoresChart" height="300"></canvas>
+                </div>
+              </div>
+              <div class="col-md-6 mb-4">
+                <div class="container-result">
+                  <h2 class="processing-results-heading">
+                    Store Visits Distribution
+                  </h2>
+                  <canvas id="mostVisitedStoresChart" height="300"></canvas>
+                </div>
+              </div>
+              <div class="col-md-6 mb-4">
+                <div class="container-result">
+                  <h2 class="processing-results-heading">
+                    Top 5 Most Expensive Items
+                  </h2>
+                  <canvas id="mostExpensiveItemsChart" height="300"></canvas>
+                </div>
+              </div>
+              <div class="col-md-6 mb-4">
+                <div class="container-result">
+                  <h2 class="processing-results-heading">
+                    Top 10 Items by Quantity
+                  </h2>
+                  <canvas id="topItemsChart" height="300"></canvas>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+      fetch("/api/statistics/top_stores")
+        .then((response) => response.json())
+        .then((data) => {
+          const ctx = document
+            .getElementById("topStoresChart")
+            .getContext("2d");
+          const chart = new Chart(ctx, {
+            type: "bar",
+            data: {
+              labels: data.stores,
+              datasets: [
+                {
+                  label: "Total Spent",
+                  data: data.totals,
+                  backgroundColor: "rgba(54, 162, 235, 0.7)",
+                  borderColor: "rgba(54, 162, 235, 1)",
+                  borderWidth: 1,
+                },
+              ],
+            },
+            options: {
+              responsive: true,
+              plugins: {
+                legend: {
+                  display: false,
+                  labels: { color: "white" },
+                },
+                title: {
+                  display: false,
+                  color: "white",
+                },
+              },
+              scales: {
+                y: {
+                  beginAtZero: true,
+                  title: {
+                    display: true,
+                    text: "Total Spent",
+                    color: "white",
+                  },
+                  grid: { color: "rgba(255, 255, 255, 0.1)" },
+                  ticks: { color: "white" },
+                },
+                x: {
+                  title: {
+                    display: true,
+                    text: "Store",
+                    color: "white",
+                  },
+                  grid: { color: "rgba(255, 255, 255, 0.1)" },
+                  ticks: { color: "white" },
+                },
+              },
+            },
+          });
+        });
+
+      fetch("/api/statistics/most_visited_stores?all=true")
+        .then((response) => response.json())
+        .then((data) => {
+          const ctx2 = document
+            .getElementById("mostVisitedStoresChart")
+            .getContext("2d");
+
+          const colors = [
+            "#FF6384",
+            "#36A2EB",
+            "#FFCE56",
+            "#4BC0C0",
+            "#9966FF",
+            "#FF9F40",
+            "#C9CBCF",
+            "#B2FF66",
+            "#FF66B2",
+            "#66FFB2",
+            "#B266FF",
+            "#66B2FF",
+            "#FFB266",
+            "#B2B266",
+            "#66FF66",
+            "#FF6666",
+            "#6666FF",
+            "#66FFFF",
+            "#FFFF66",
+            "#FF66FF",
+          ];
+          new Chart(ctx2, {
+            type: "pie",
+            data: {
+              labels: data.stores,
+              datasets: [
+                {
+                  label: "Number of Visits",
+                  data: data.counts,
+                  backgroundColor: colors,
+                  borderColor: "#222",
+                  borderWidth: 1,
+                },
+              ],
+            },
+            options: {
+              responsive: true,
+              plugins: {
+                legend: {
+                  display: true,
+                  position: "bottom",
+                  labels: { color: "#fff" },
+                },
+                title: { display: false },
+              },
+            },
+          });
+        });
+
+      fetch("/api/statistics/most_expensive_items")
+        .then((response) => response.json())
+        .then((data) => {
+          const ctx3 = document
+            .getElementById("mostExpensiveItemsChart")
+            .getContext("2d");
+          const colors = [
+            "#FF6384",
+            "#36A2EB",
+            "#FFCE56",
+            "#4BC0C0",
+            "#9966FF",
+          ];
+          new Chart(ctx3, {
+            type: "polarArea",
+            data: {
+              labels: data.names,
+              datasets: [
+                {
+                  label: "Price",
+                  data: data.values,
+                  backgroundColor: colors,
+                  borderColor: "#222",
+                  borderWidth: 1,
+                },
+              ],
+            },
+            options: {
+              responsive: true,
+              plugins: {
+                legend: {
+                  display: true,
+                  position: "bottom",
+                  labels: { color: "#fff" },
+                },
+                title: { display: false },
+              },
+              scales: {
+                r: {
+                  beginAtZero: true,
+                  grid: { color: "#888" },
+                  ticks: { color: "#fff" },
+                },
+              },
+            },
+          });
+        });
+
+      fetch("/api/statistics/top_items")
+        .then((response) => response.json())
+        .then((data) => {
+          const ctx4 = document
+            .getElementById("topItemsChart")
+            .getContext("2d");
+          const chart = new Chart(ctx4, {
+            type: "bar",
+            data: {
+              labels: data.items,
+              datasets: [
+                {
+                  label: "Total Quantity Purchased",
+                  data: data.quantities,
+                  backgroundColor: "rgba(75, 192, 192, 0.7)",
+                  borderColor: "rgba(75, 192, 192, 1)",
+                  borderWidth: 1,
+                },
+              ],
+            },
+            options: {
+              responsive: true,
+              indexAxis: "y",
+              plugins: {
+                legend: { display: false },
+                title: { display: false },
+              },
+              scales: {
+                x: {
+                  beginAtZero: true,
+                  title: {
+                    display: true,
+                    text: "Total Quantity",
+                    color: "#fff",
+                  },
+                  grid: { color: "rgba(255, 255, 255, 0.1)" },
+                  ticks: { color: "#fff" },
+                },
+                y: {
+                  title: { display: true, text: "Item Name", color: "#fff" },
+                  grid: { color: "rgba(255, 255, 255, 0.1)" },
+                  ticks: { color: "#fff" },
+                },
+              },
+            },
+          });
+        });
+    </script>
+  </body>
+</html>
