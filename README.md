@@ -1,4 +1,4 @@
-# 🚀 Document Processing & Login System
+# 🚀 Šparko Receipt Processing System
 
 [![YouTube Video](https://i.ytimg.com/vi/trH_vHMMgvo/maxresdefault.jpg)](https://www.youtube.com/embed/trH_vHMMgvo?si=PV53zFyxGKhIqZkD)
 
