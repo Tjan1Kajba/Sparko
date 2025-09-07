@@ -105,27 +105,9 @@ POST /process-document → Process single doc
 GET /docs → Swagger UI
 
 ## 📂 File Structure
-text
-Copy code
-Project_Login/
-├── main.py                     # FastAPI login app
-├── requirements.txt            # Dependencies
-├── start_complete_system.py    # Startup script
-├── start_system.ps1            # PowerShell script
-├── test_integration.py         # Integration tests
-├── static/                     # CSS, images
-├── templates/                  # HTML templates
-│   ├── dashboard.html
-│   ├── login.html
-│   ├── register.html
-│   └── ...
+<img width="373" height="382" alt="image" src="https://github.com/user-attachments/assets/74113e64-d98e-4ef6-83ae-a7fee91d76c4" />
 
-Server/
-├── app.py                      # FastAPI server
-├── main_final_optimized.py     # Donut model impl.
-├── requirements.txt            # Dependencies
-├── start_server.py             # Startup script
-└── model_cache/                # Cached model files
+
 ## 🔄 Integration Flow
 User uploads image via dashboard
 
