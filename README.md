@@ -3,7 +3,6 @@
 [![YouTube Video](https://i.ytimg.com/vi/trH_vHMMgvo/maxresdefault.jpg)](https://www.youtube.com/embed/trH_vHMMgvo?si=PV53zFyxGKhIqZkD)
 
 A **FastAPI-based system** that integrates a secure **login application** with a **document processing server** using the **Donut model** for intelligent image-to-text extraction.  
-Built with a focus on **security**, **scalability**, and **modern practices**.
 
 ---
 
@@ -149,6 +148,4 @@ GPU: Install CUDA, adjust batch sizes
 
 CPU: Optimize thread usage, scale with workers
 
-Monitoring: Track memory & performance metrics
 
-💡 Built with FastAPI + Donut model for robust, modern document processing.
