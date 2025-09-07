@@ -17,7 +17,6 @@ A **FastAPI-based system** that integrates a secure **login application** with a
 │   - Dashboard       │                    │   - Text Extraction  │
 └─────────────────────┘                    └──────────────────────┘
 
-
 ## 🔑 Login Application (Port 8000)
 User registration & authentication
 
