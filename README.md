@@ -17,8 +17,8 @@ A **FastAPI-based system** that integrates a secure **login application** with a
 │   - File Upload     │                    │   - Image Processing │
 │   - Dashboard       │                    │   - Text Extraction  │
 └─────────────────────┘                    └──────────────────────┘
-✨ Features
-🔑 Login Application (Port 8000)
+
+## 🔑 Login Application (Port 8000)
 User registration & authentication
 
 Session management with timeout
@@ -29,7 +29,7 @@ Drag & drop file upload
 
 Real-time results dashboard
 
-📄 Document Processing Server (Port 8080)
+## 📄 Document Processing Server (Port 8080)
 Donut model for text extraction
 
 REST API endpoints
@@ -40,7 +40,7 @@ Batch processing support
 
 Health monitoring
 
-🔐 Security Guide
+## 🔐 Security Guide
 The app uses a secure SECRET_KEY (from .env or environment variables). If none is set, one is generated automatically.
 
 Setup Environment Variables
@@ -52,7 +52,7 @@ Copy .env.example → .env
 
 Replace your-secret-key-here with the generated key
 
-⚡ Production Tips:
+## ⚡ Production Tips:
 
 Never commit .env files
 
@@ -60,19 +60,19 @@ Use platform-specific environment variable settings
 
 Enable HTTPS & rate limiting
 
-⚡ Quick Start
-📋 Prerequisites
+## ⚡ Quick Start
+## 📋 Prerequisites
 Python 3.8+
 
 MongoDB (local or Atlas)
 
 CUDA-capable GPU (optional)
 
-▶️ Option 1: Automated Startup (Recommended)
+## ▶️ Option 1: Automated Startup (Recommended)
 bash
 Copy code
 python start_complete_system.py
-▶️ Option 2: Manual Startup
+## ▶️ Option 2: Manual Startup
 Start Document Processing Server:
 
 bash
@@ -87,8 +87,8 @@ Copy code
 cd Project_Login
 pip install -r requirements.txt
 python -m uvicorn main:app --host 0.0.0.0 --port 8000 --reload
-📡 API Endpoints
-🔑 Login Application (Port 8000)
+## 📡 API Endpoints
+## 🔑 Login Application (Port 8000)
 GET / → Home
 
 GET /register → Registration form
@@ -105,12 +105,12 @@ POST /dashboard → Upload & process doc
 
 GET /logout → Logout
 
-📄 Document Processing Server (Port 8080)
+## 📄 Document Processing Server (Port 8080)
 POST /process-document → Process single doc
 
 GET /docs → Swagger UI
 
-📂 File Structure
+## 📂 File Structure
 text
 Copy code
 Project_Login/
@@ -132,7 +132,7 @@ Server/
 ├── requirements.txt            # Dependencies
 ├── start_server.py             # Startup script
 └── model_cache/                # Cached model files
-🔄 Integration Flow
+## 🔄 Integration Flow
 User uploads image via dashboard
 
 Login app forwards file → processing server
@@ -143,7 +143,7 @@ Server responds with results
 
 Login app displays output
 
-⚙️ Performance Optimization
+## ⚙️ Performance Optimization
 GPU: Install CUDA, adjust batch sizes
 
 CPU: Optimize thread usage, scale with workers
