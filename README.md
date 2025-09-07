@@ -1,4 +1,6 @@
-[![YouTube Video](https://img.youtube.com/vi/YOUTUBE_ID/0.jpg)](https://www.youtube.com/embed/trH_vHMMgvo?si=PV53zFyxGKhIqZkD)
+
+[![YouTube Video](https://i.ytimg.com/vi/trH_vHMMgvo/maxresdefault.jpg)](https://www.youtube.com/embed/trH_vHMMgvo?si=PV53zFyxGKhIqZkD)
+
 
 # Document Processing & Login System
 
