@@ -51,7 +51,7 @@ def main():
     print("=" * 50)
 
     current_dir = Path(__file__).parent
-    server_path = current_dir.parent / "Server"
+    server_path = current_dir.parent / "Donut_Server"
     login_path = current_dir
 
     print(f"📁 Server path: {server_path}")
